@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <virtualType name="MageSuite\AdminGridBookmarks\Block\Adminhtml\SaveConfigButton\ProductListing" type="MageSuite\AdminGridBookmarks\Block\Adminhtml\SaveConfigButton">
+        <arguments>
+            <argument name="componentName" xsi:type="string">product_listing</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="MageSuite\AdminGridBookmarks\Block\Adminhtml\SaveConfigButton\SalesOrderGrid" type="MageSuite\AdminGridBookmarks\Block\Adminhtml\SaveConfigButton">
+        <arguments>
+            <argument name="componentName" xsi:type="string">sales_order_grid</argument>
+        </arguments>
+    </virtualType>
+</config>

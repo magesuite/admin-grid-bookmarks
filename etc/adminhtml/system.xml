@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="magesuite" translate="label" sortOrder="300">
+            <label>MageSuite</label>
+        </tab>
+        <section id="bookmark" showInDefault="1" showInWebsite="0" showInStore="0" sortOrder="60" translate="label">
+            <label>Bookmark</label>
+            <tab>magesuite</tab>
+            <resource>MageSuite_AdminGridBookmarks::configuration</resource>
+            <group id="general" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="10" translate="label">
+                <field id="user_list" translate="label,comment" type="text" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>User list</label>
+                    <comment>Allowed users to save grid configuration. Comma separated.</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
