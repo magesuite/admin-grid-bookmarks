@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace MageSuite\AdminGridBookmarks\Controller\Adminhtml;
+namespace MageSuite\AdminGridBookmarks\Controller\Adminhtml\Bookmark;
 
-class ApplyBookmarkConfig extends \Magento\Backend\App\Action implements \Magento\Framework\App\Action\HttpGetActionInterface
+class Apply extends \Magento\Backend\App\Action implements \Magento\Framework\App\Action\HttpGetActionInterface
 {
     protected \MageSuite\AdminGridBookmarks\Model\EditableComponents $editableComponents;
 
@@ -13,7 +13,7 @@ class ApplyBookmarkConfig extends \Magento\Backend\App\Action implements \Magent
 
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
-        \Creativestyle\CustomizationIpet\Model\Ui\EditableComponents $editableComponents,
+        \MageSuite\AdminGridBookmarks\Model\EditableComponents $editableComponents,
         \MageSuite\AdminGridBookmarks\Model\ConfigApplier $configApplier,
         \Magento\Authorization\Model\UserContextInterface $userContext
     ) {

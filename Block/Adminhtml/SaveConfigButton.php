@@ -33,7 +33,7 @@ class SaveConfigButton implements \Magento\Framework\View\Element\UiComponent\Co
 
         return [
             'label' => __('Save Grid Configuration'),
-            'url' => $this->getUrl('gridbookmarks/applyBookmarkConfig', ['component' => $this->getComponentName()]),
+            'url' => $this->getUrl('gridbookmarks/bookmark/apply', ['component' => $this->getComponentName()]),
             'class' => 'apply',
             'sort_order' => 90,
         ];
