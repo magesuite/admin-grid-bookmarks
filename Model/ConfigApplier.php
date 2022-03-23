@@ -90,14 +90,21 @@ class ConfigApplier
             ->addFieldToFilter('user_id', ['nin' => $this->adminId]);
 
         foreach ($userCollection->getAllIds() as $adminUserId) {
-            $existingBookmark = $this->collectionFactory->create()
+            $collection = $this->collectionFactory->create()
                 ->addFieldToFilter('namespace', $bookmark->getNamespace())
                 ->addFieldToFilter('user_id', $adminUserId)
-                ->addFieldToFilter('identifier', self::IDENTIFIER)
-                ->getFirstItem();
-
+                ->addFieldToFilter('identifier', self::IDENTIFIER);
+            $existingBookmark = $collection->getFirstItem();
             $bookmark->setId($existingBookmark->getId());
             $bookmark->setUserId($adminUserId);
+            $conditions = [
+                'namespace = ?' => $bookmark->getNamespace(),
+                'user_id = ?' => $adminUserId,
+            ];
+            $collection->getConnection()->delete(
+                $collection->getMainTable(),
+                $conditions
+            );
             $this->bookmarkRepository->save($bookmark);
         }
     }
