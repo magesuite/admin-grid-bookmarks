@@ -5,11 +5,13 @@ namespace MageSuite\AdminGridBookmarks\Model;
 
 class ConfigApplier
 {
-    public const IDENTIFIER = 'magesuite_view';
+    public const IDENTIFIER_PREFIX = 'magesuite_view';
 
     public const BOOKMARK_TITLE = 'MageSuite View';
 
     protected $adminId;
+
+    protected $bookmarkIdentifier;
 
     protected \Magento\Ui\Api\BookmarkRepositoryInterface $bookmarkRepository;
 
@@ -33,11 +35,8 @@ class ConfigApplier
 
     /**
      * Save grid configuration for all admin users
-     *
-     * @param string $namespace
-     * @throws \Magento\Framework\Exception\CouldNotSaveException
      */
-    public function execute(string $namespace, int $adminId)
+    public function execute(string $namespace, int $adminId): void
     {
         $this->adminId = $adminId;
         /** @var \Magento\Ui\Model\Bookmark $bookmark */
@@ -64,17 +63,17 @@ class ConfigApplier
 
     public function modifyConfiguration(\Magento\Ui\Model\Bookmark $bookmark): void
     {
-        $bookmark->setId(null);
-        $bookmark->setIdentifier(self::IDENTIFIER);
+        $identifier = $this->getBookmarkIdentifier();
+        $bookmark->setIdentifier($identifier);
         $bookmark->setCurrent(false);
         $bookmark->setTitle(self::BOOKMARK_TITLE);
         $config = $bookmark->getConfig();
         $viewData = array_pop($config['views']);
         $newConfig = [
             'views' => [
-                self::IDENTIFIER => [
+                $identifier => [
                     'label' => self::BOOKMARK_TITLE,
-                    'index' => self::IDENTIFIER,
+                    'index' => $identifier,
                     'editable' => true,
                     'data' => $viewData['data'],
                     'value' => self::BOOKMARK_TITLE
@@ -90,22 +89,27 @@ class ConfigApplier
             ->addFieldToFilter('user_id', ['nin' => $this->adminId]);
 
         foreach ($userCollection->getAllIds() as $adminUserId) {
-            $collection = $this->collectionFactory->create()
-                ->addFieldToFilter('namespace', $bookmark->getNamespace())
-                ->addFieldToFilter('user_id', $adminUserId)
-                ->addFieldToFilter('identifier', self::IDENTIFIER);
-            $existingBookmark = $collection->getFirstItem();
-            $bookmark->setId($existingBookmark->getId());
+            $bookmark->setId(null);
             $bookmark->setUserId($adminUserId);
             $conditions = [
                 'namespace = ?' => $bookmark->getNamespace(),
                 'user_id = ?' => $adminUserId,
+                'identifier LIKE ?' => self::IDENTIFIER_PREFIX . '%'
             ];
-            $collection->getConnection()->delete(
-                $collection->getMainTable(),
+            $userCollection->getConnection()->delete(
+                $bookmark->getResource()->getMainTable(),
                 $conditions
             );
             $this->bookmarkRepository->save($bookmark);
         }
+    }
+
+    protected function getBookmarkIdentifier(): string
+    {
+        if (!$this->bookmarkIdentifier) {
+            $this->bookmarkIdentifier = sprintf('%s_%s', self::IDENTIFIER_PREFIX, time());
+        }
+
+        return $this->bookmarkIdentifier;
     }
 }
