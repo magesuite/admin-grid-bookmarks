@@ -23,6 +23,7 @@ class ConfigApplierTest extends \PHPUnit\Framework\TestCase
     protected function setUp(): void
     {
         $objectManager = \Magento\TestFramework\Helper\Bootstrap::getObjectManager();
+
         $this->userFactory = $objectManager->get(\Magento\User\Model\UserFactory::class);
         $this->collectionFactory = $objectManager->get(\Magento\Ui\Model\ResourceModel\Bookmark\CollectionFactory::class);
         $this->configApplier = $objectManager->get(\MageSuite\AdminGridBookmarks\Model\ConfigApplier::class);
@@ -47,10 +48,7 @@ class ConfigApplierTest extends \PHPUnit\Framework\TestCase
     {
         /** @var \Magento\Ui\Model\ResourceModel\Bookmark\Collection $collection */
         $collection = $this->collectionFactory->create()
-            ->addFieldToFilter(
-                \MageSuite\UiBookmarkCleaner\Controller\Adminhtml\Reset\Index::UI_BOOKMARK_USER_ID_FIELD,
-                ['eq' => $adminId]
-            );
+            ->addFieldToFilter('user_id', ['eq' => $adminId]);
 
         return $collection;
     }
