@@ -1,6 +1,6 @@
 {
   "name": "creativestyle/magesuite-admin-grid-bookmarks",
-  "description": "Admin Grid Bookmarks",
+  "description": "The module is responsible for allowing users to customize the columns in the product grid and order grid in the Admin Panel.",
   "homepage": "https://creativestyle.de",
   "license": "OSL-3.0",
   "type": "magento2-module",
